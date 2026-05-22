@@ -1,0 +1,15 @@
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\bin\Debug\net10.0\SaasDental.Application.deps.json
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\bin\Debug\net10.0\SaasDental.Application.dll
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\bin\Debug\net10.0\SaasDental.Application.pdb
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\bin\Debug\net10.0\SaasDental.Domain.dll
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\bin\Debug\net10.0\SaasDental.Domain.pdb
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\SaasDental.Application.csproj.AssemblyReference.cache
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\SaasDental.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\SaasDental.Application.AssemblyInfoInputs.cache
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\SaasDental.Application.AssemblyInfo.cs
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\SaasDental.Application.csproj.CoreCompileInputs.cache
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\SaasDent.90E9F27E.Up2Date
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\SaasDental.Application.dll
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\refint\SaasDental.Application.dll
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\SaasDental.Application.pdb
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\ref\SaasDental.Application.dll

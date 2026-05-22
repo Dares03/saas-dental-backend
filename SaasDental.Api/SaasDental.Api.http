@@ -1,0 +1,6 @@
+@SaasDental.Api_HostAddress = http://localhost:5101
+
+GET {{SaasDental.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

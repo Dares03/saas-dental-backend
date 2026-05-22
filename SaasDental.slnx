@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="SaasDental.Api/SaasDental.Api.csproj" />
+  <Project Path="SaasDental.Application/SaasDental.Application.csproj" />
+  <Project Path="SaasDental.Domain/SaasDental.Domain.csproj" />
+  <Project Path="SaasDental.Infrastructure/SaasDental.Infrastructure.csproj" />
+</Solution>
