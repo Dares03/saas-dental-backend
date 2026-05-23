@@ -1,0 +1,107 @@
+# ===========================
+# Build output
+# ===========================
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+out/
+publish/
+
+# ===========================
+# .NET / MSBuild
+# ===========================
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.opensdf
+*.sdf
+*.cachefile
+*.aps
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ===========================
+# NuGet
+# ===========================
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+nuget.config
+
+# ===========================
+# Entity Framework Migrations (opcional: comenta si quieres versionar migraciones)
+# ===========================
+# **/Migrations/
+
+# ===========================
+# Environment / Secrets
+# ===========================
+.env
+.env.*
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+*.pfx
+*.p12
+
+# ===========================
+# Visual Studio / Rider / VS Code
+# ===========================
+.vs/
+.idea/
+.vscode/
+*.vcxproj.filters
+*.vcxproj.user
+*.dbmdl
+*.jfm
+*.pfx
+*.publishsettings
+*.pubxml
+*.pubxml.user
+
+# ===========================
+# Test results & coverage
+# ===========================
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.coverage
+*.coveragexml
+coverage/
+TestResults/
+
+# ===========================
+# Docker
+# ===========================
+.dockerignore
+
+# ===========================
+# OS
+# ===========================
+.DS_Store
+Thumbs.db
+desktop.ini
