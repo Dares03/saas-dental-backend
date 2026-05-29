@@ -10,6 +10,9 @@ public class Tenant : BaseEntity
 
     // Navigation property for Users
     public ICollection<User> Users { get; private set; } = new List<User>();
+    
+    // Navigation property for Branches
+    public ICollection<Branch> Branches { get; private set; } = new List<Branch>();
 
     private Tenant() { } // For EF Core
 

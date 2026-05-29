@@ -15,6 +15,10 @@ public class User : BaseEntity
     public Guid TenantId { get; private set; }
     public Tenant Tenant { get; private set; } = null!;
 
+    // Optional: The default branch this user operates in (for UI hot-switching)
+    public Guid? DefaultBranchId { get; private set; }
+    public Branch? DefaultBranch { get; private set; }
+
     private User() { } // For EF Core
 
     public User(string firstName, string lastName, string email, string passwordHash, string role, Guid tenantId)
@@ -32,6 +36,18 @@ public class User : BaseEntity
     {
         FirstName = firstName;
         LastName = lastName;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void SetDefaultBranch(Guid? branchId)
+    {
+        DefaultBranchId = branchId;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Deactivate()
+    {
+        IsActive = false;
         UpdatedAt = DateTime.UtcNow;
     }
 }

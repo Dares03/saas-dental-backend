@@ -15,6 +15,7 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<Tenant> Tenants => Set<Tenant>();
+    public DbSet<Branch> Branches => Set<Branch>();
     public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,6 +25,7 @@ public class ApplicationDbContext : DbContext
         // Multitenancy Global Query Filter
         // Applies to all queries for entities that have a TenantId
         modelBuilder.Entity<User>().HasQueryFilter(u => u.TenantId == _tenantService.GetCurrentTenantId());
+        modelBuilder.Entity<Branch>().HasQueryFilter(b => b.TenantId == _tenantService.GetCurrentTenantId());
 
         // Configure relationships and constraints
         modelBuilder.Entity<Tenant>()
@@ -31,6 +33,18 @@ public class ApplicationDbContext : DbContext
             .WithOne(u => u.Tenant)
             .HasForeignKey(u => u.TenantId)
             .OnDelete(DeleteBehavior.Restrict); // Prevent deleting a tenant if it has users
+
+        modelBuilder.Entity<Tenant>()
+            .HasMany(t => t.Branches)
+            .WithOne(b => b.Tenant)
+            .HasForeignKey(b => b.TenantId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.DefaultBranch)
+            .WithMany()
+            .HasForeignKey(u => u.DefaultBranchId)
+            .OnDelete(DeleteBehavior.SetNull);
             
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
@@ -41,17 +55,22 @@ public class ApplicationDbContext : DbContext
     {
         var currentTenantId = _tenantService.GetCurrentTenantId();
 
-        foreach (var entry in ChangeTracker.Entries<User>())
+        foreach (var entry in ChangeTracker.Entries())
         {
-            switch (entry.State)
+            if (entry.State == EntityState.Added)
             {
-                case EntityState.Added:
-                    // Automatically assign the TenantId when creating a new User
-                    if (currentTenantId.HasValue)
+                // Check if the entity has a TenantId property
+                var tenantIdProperty = entry.Entity.GetType().GetProperty("TenantId");
+                
+                if (tenantIdProperty != null && currentTenantId.HasValue)
+                {
+                    // Only assign if it's currently empty/default (in case it was explicitly set for some reason)
+                    var currentValue = tenantIdProperty.GetValue(entry.Entity);
+                    if (currentValue == null || (Guid)currentValue == Guid.Empty)
                     {
-                        entry.Entity.GetType().GetProperty("TenantId")?.SetValue(entry.Entity, currentTenantId.Value);
+                        tenantIdProperty.SetValue(entry.Entity, currentTenantId.Value);
                     }
-                    break;
+                }
             }
         }
 
