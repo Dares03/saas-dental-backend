@@ -4,6 +4,7 @@ using SaasDental.Application.Features.Clinical.Commands.UpdateClinicalHistory;
 using SaasDental.Application.Features.Clinical.Commands.CreateOdontogram;
 using SaasDental.Application.Features.Clinical.Commands.AddFindingToOdontogram;
 using SaasDental.Application.Features.Clinical.Queries.GetOdontogram;
+using SaasDental.Application.Features.Clinical.Queries.GetHistoryByPatientId;
 
 namespace SaasDental.Api.Endpoints;
 
@@ -22,6 +23,15 @@ public static class ClinicalEndpoints
             return Results.Ok(new { id = historyId });
         })
         .Produces(StatusCodes.Status200OK);
+
+        group.MapGet("/history/patient/{patientId:guid}", async (Guid patientId, IMediator mediator) =>
+        {
+            var query = new GetHistoryByPatientIdQuery(patientId);
+            var result = await mediator.Send(query);
+            return result != null ? Results.Ok(result) : Results.NotFound();
+        })
+        .Produces<ClinicalHistoryDto>()
+        .Produces(StatusCodes.Status404NotFound);
 
         // -- Odontogram --
         group.MapPost("/odontogram", async (IMediator mediator, [FromBody] CreateOdontogramCommand command) =>
