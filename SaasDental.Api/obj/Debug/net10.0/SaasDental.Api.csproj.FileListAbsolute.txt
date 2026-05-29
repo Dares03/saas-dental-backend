@@ -53,3 +53,4 @@ C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Api\obj\Debug
 C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Api\obj\Debug\net10.0\SaasDental.Api.pdb
 C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Api\obj\Debug\net10.0\SaasDental.Api.genruntimeconfig.cache
 C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Api\obj\Debug\net10.0\ref\SaasDental.Api.dll
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Api\obj\Debug\net10.0\SaasDental.Api.sourcelink.json

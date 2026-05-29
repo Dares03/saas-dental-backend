@@ -13,3 +13,4 @@ C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\o
 C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\refint\SaasDental.Application.dll
 C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\SaasDental.Application.pdb
 C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\ref\SaasDental.Application.dll
+C:\Users\jossh\Proyectos\tesis\saas\saas-dental-backend\SaasDental.Application\obj\Debug\net10.0\SaasDental.Application.sourcelink.json
