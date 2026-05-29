@@ -25,6 +25,11 @@ public static class DependencyInjection
         services.AddScoped<ITenantRepository, TenantRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IBranchRepository, BranchRepository>();
+        services.AddScoped<IPatientRepository, PatientRepository>();
+        services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+        services.AddScoped<IClinicalRepository, ClinicalRepository>();
+        services.AddScoped<IFinancialRepository, FinancialRepository>();
+        services.AddScoped<IInventoryRepository, InventoryRepository>();
 
         // ── Security services ─────────────────────────────────────
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();

@@ -96,5 +96,10 @@ app.MapAuthEndpoints();
 app.MapTenantEndpoints();
 app.MapBranchEndpoints();
 app.MapUserEndpoints();
+app.MapPatientEndpoints();
+app.MapAppointmentEndpoints();
+app.MapClinicalEndpoints();
+app.MapFinancialEndpoints();
+app.MapInventoryEndpoints();
 
 app.Run();
