@@ -3,4 +3,5 @@
   <Project Path="SaasDental.Application/SaasDental.Application.csproj" />
   <Project Path="SaasDental.Domain/SaasDental.Domain.csproj" />
   <Project Path="SaasDental.Infrastructure/SaasDental.Infrastructure.csproj" />
+  <Project Path="SaasDental.UnitTests/SaasDental.UnitTests.csproj" />
 </Solution>

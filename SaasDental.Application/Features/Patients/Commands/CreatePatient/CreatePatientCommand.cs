@@ -46,6 +46,15 @@ public class CreatePatientHandler : IRequestHandler<CreatePatientCommand, Guid>
         var tenantId = _tenantService.GetCurrentTenantId()
             ?? throw new UnauthorizedAccessException("El contexto no tiene un Tenant válido.");
 
+        if (!string.IsNullOrEmpty(request.DocumentId))
+        {
+            var patients = await _patientRepository.GetAllAsync(cancellationToken);
+            if (patients.Any(p => p.DocumentId == request.DocumentId && p.TenantId == tenantId))
+            {
+                throw new InvalidOperationException($"Ya existe un paciente con el documento '{request.DocumentId}'.");
+            }
+        }
+
         var patient = new Patient(
             request.FirstName, 
             request.LastName, 

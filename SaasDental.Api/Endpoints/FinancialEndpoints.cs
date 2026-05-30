@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SaasDental.Application.Features.Financial.Commands.CreateTreatmentService;
 using SaasDental.Application.Features.Financial.Commands.OpenCashRegister;
 using SaasDental.Application.Features.Financial.Commands.AddIncome;
+using SaasDental.Application.Features.Financial.Queries.GetActiveCashRegister;
 
 namespace SaasDental.Api.Endpoints;
 
@@ -37,5 +38,14 @@ public static class FinancialEndpoints
             return Results.Created($"/api/financial/transactions/{transactionId}", new { id = transactionId });
         })
         .Produces(StatusCodes.Status201Created);
+
+        group.MapGet("/cash-register/active/{branchId:guid}", async (Guid branchId, IMediator mediator) =>
+        {
+            var query = new GetActiveCashRegisterQuery(branchId);
+            var result = await mediator.Send(query);
+            return result != null ? Results.Ok(result) : Results.NotFound();
+        })
+        .Produces<CashRegisterDto>()
+        .Produces(StatusCodes.Status404NotFound);
     }
 }
