@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SaasDental.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d5bdd3fdebd9b8b02d3a7e391d5c2b2ee15d81f6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+246b88f71530ffa642ea064d6e0767d4292f5976")]
 [assembly: System.Reflection.AssemblyProductAttribute("SaasDental.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SaasDental.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

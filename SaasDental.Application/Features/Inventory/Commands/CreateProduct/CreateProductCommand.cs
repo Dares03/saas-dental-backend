@@ -11,7 +11,8 @@ public record CreateProductCommand(
     string? SKU,
     string UnitOfMeasure,
     int MinimumStockAlert,
-    Guid CategoryId) : IRequest<Guid>;
+    Guid CategoryId,
+    Guid BranchId) : IRequest<Guid>;
 
 public class CreateProductValidator : AbstractValidator<CreateProductCommand>
 {
@@ -21,6 +22,7 @@ public class CreateProductValidator : AbstractValidator<CreateProductCommand>
         RuleFor(x => x.UnitOfMeasure).NotEmpty().MaximumLength(50);
         RuleFor(x => x.MinimumStockAlert).GreaterThanOrEqualTo(0);
         RuleFor(x => x.CategoryId).NotEmpty();
+        RuleFor(x => x.BranchId).NotEmpty();
     }
 }
 
@@ -51,6 +53,11 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Guid>
 
         await _inventoryRepository.AddProductAsync(product, cancellationToken);
 
+        // Crear automáticamente el InventoryItem para la sede actual
+        var inventoryItem = new InventoryItem(product.Id, request.BranchId, tenantId);
+        await _inventoryRepository.AddInventoryItemAsync(inventoryItem, cancellationToken);
+
         return product.Id;
     }
 }
+

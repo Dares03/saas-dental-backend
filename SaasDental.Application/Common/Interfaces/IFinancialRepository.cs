@@ -17,6 +17,7 @@ public interface IFinancialRepository
     // Transacciones
     Task AddCashTransactionAsync(CashTransaction transaction, CancellationToken cancellationToken = default);
     Task<CashTransaction?> GetTransactionByIdAsync(Guid transactionId, CancellationToken cancellationToken = default);
+    Task<List<CashTransaction>> GetTransactionsByCashRegisterAsync(Guid cashRegisterId, CancellationToken cancellationToken = default);
     Task UpdateTransactionAsync(CashTransaction transaction, CancellationToken cancellationToken = default);
 
     // Deudas

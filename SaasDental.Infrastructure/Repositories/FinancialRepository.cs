@@ -64,6 +64,14 @@ public class FinancialRepository : IFinancialRepository
             .FirstOrDefaultAsync(ct => ct.Id == transactionId, cancellationToken);
     }
 
+    public async Task<List<CashTransaction>> GetTransactionsByCashRegisterAsync(Guid cashRegisterId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.CashTransactions
+            .Where(ct => ct.CashRegisterId == cashRegisterId)
+            .OrderByDescending(ct => ct.CreatedAt)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task UpdateTransactionAsync(CashTransaction transaction, CancellationToken cancellationToken = default)
     {
         _dbContext.CashTransactions.Update(transaction);

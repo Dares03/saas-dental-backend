@@ -38,13 +38,15 @@ public class CreateProductHandlerTests
         _tenantServiceMock.Setup(t => t.GetCurrentTenantId()).Returns(tenantId);
 
         var categoryId = Guid.NewGuid();
+        var branchId = Guid.NewGuid();
         var command = new CreateProductCommand(
             "Anestesia Local",
             "Caja de 50 cartuchos",
             "ANES-001",
             "Caja",
             5,
-            categoryId
+            categoryId,
+            branchId
         );
 
         // Act

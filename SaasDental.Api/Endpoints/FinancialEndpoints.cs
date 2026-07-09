@@ -2,8 +2,11 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SaasDental.Application.Features.Financial.Commands.CreateTreatmentService;
 using SaasDental.Application.Features.Financial.Commands.OpenCashRegister;
+using SaasDental.Application.Features.Financial.Commands.CloseCashRegister;
 using SaasDental.Application.Features.Financial.Commands.AddIncome;
+using SaasDental.Application.Features.Financial.Commands.AddExpense;
 using SaasDental.Application.Features.Financial.Queries.GetActiveCashRegister;
+using SaasDental.Application.Features.Financial.Queries.GetCashRegisterTransactions;
 
 namespace SaasDental.Api.Endpoints;
 
@@ -31,13 +34,12 @@ public static class FinancialEndpoints
         })
         .Produces(StatusCodes.Status201Created);
 
-        // -- Transacciones --
-        group.MapPost("/cash-register/income", async (IMediator mediator, [FromBody] AddIncomeCommand command) =>
+        group.MapPost("/cash-register/close", async (IMediator mediator, [FromBody] CloseCashRegisterCommand command) =>
         {
-            var transactionId = await mediator.Send(command);
-            return Results.Created($"/api/financial/transactions/{transactionId}", new { id = transactionId });
+            await mediator.Send(command);
+            return Results.Ok();
         })
-        .Produces(StatusCodes.Status201Created);
+        .Produces(StatusCodes.Status200OK);
 
         group.MapGet("/cash-register/active/{branchId:guid}", async (Guid branchId, IMediator mediator) =>
         {
@@ -47,5 +49,30 @@ public static class FinancialEndpoints
         })
         .Produces<CashRegisterDto>()
         .Produces(StatusCodes.Status404NotFound);
+
+        group.MapGet("/cash-register/{cashRegisterId:guid}/transactions", async (Guid cashRegisterId, IMediator mediator) =>
+        {
+            var query = new GetCashRegisterTransactionsQuery(cashRegisterId);
+            var results = await mediator.Send(query);
+            return Results.Ok(results);
+        })
+        .Produces<List<CashTransactionDto>>()
+        .Produces(StatusCodes.Status200OK);
+
+        // -- Transacciones --
+        group.MapPost("/cash-register/income", async (IMediator mediator, [FromBody] AddIncomeCommand command) =>
+        {
+            var transactionId = await mediator.Send(command);
+            return Results.Created($"/api/financial/transactions/{transactionId}", new { id = transactionId });
+        })
+        .Produces(StatusCodes.Status201Created);
+
+        group.MapPost("/cash-register/expense", async (IMediator mediator, [FromBody] AddExpenseCommand command) =>
+        {
+            var transactionId = await mediator.Send(command);
+            return Results.Created($"/api/financial/transactions/{transactionId}", new { id = transactionId });
+        })
+        .Produces(StatusCodes.Status201Created);
     }
 }
+

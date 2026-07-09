@@ -44,6 +44,23 @@ public class InventoryRepository : IInventoryRepository
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task<List<InventoryItem>> GetAllItemsByBranchAsync(Guid branchId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.InventoryItems
+            .Include(ii => ii.Product)
+                .ThenInclude(p => p.Category)
+            .Where(ii => ii.BranchId == branchId)
+            .OrderBy(ii => ii.Product.Name)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<List<ProductCategory>> GetProductCategoriesAsync(CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Set<ProductCategory>()
+            .OrderBy(c => c.Name)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<List<InventoryItem>> GetLowStockItemsAsync(Guid branchId, CancellationToken cancellationToken = default)
     {
         return await _dbContext.InventoryItems
