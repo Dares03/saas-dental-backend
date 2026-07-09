@@ -11,6 +11,7 @@ public class Tooth : BaseEntity
 
     public ICollection<ToothSurface> Surfaces { get; private set; } = new List<ToothSurface>();
     public ICollection<ClinicalFinding> ToothLevelFindings { get; private set; } = new List<ClinicalFinding>();
+    public ICollection<ClinicalEvolution> Evolutions { get; private set; } = new List<ClinicalEvolution>();
 
     private Tooth() { }
 

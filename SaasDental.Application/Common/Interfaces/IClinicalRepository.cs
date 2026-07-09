@@ -12,7 +12,12 @@ public interface IClinicalRepository
     Task UpdateHistoryAsync(ClinicalHistory history, CancellationToken cancellationToken = default);
     
     Task AddOdontogramAsync(Odontogram odontogram, CancellationToken cancellationToken = default);
+    Task<ClinicalFinding?> GetClinicalFindingByIdAsync(Guid findingId, CancellationToken cancellationToken = default);
     Task AddClinicalFindingAsync(ClinicalFinding finding, CancellationToken cancellationToken = default);
     
+    Task AddClinicalEvolutionAsync(ClinicalEvolution evolution, CancellationToken cancellationToken = default);
+    
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
+    Task<Tooth?> GetToothByIdAsync(Guid toothId, CancellationToken cancellationToken = default);
+    Task DeleteToothAsync(Guid odontogramId, int toothNumber, CancellationToken cancellationToken = default);
 }

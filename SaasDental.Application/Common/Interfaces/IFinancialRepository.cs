@@ -11,6 +11,7 @@ public interface IFinancialRepository
     // Caja
     Task<CashRegister?> GetActiveCashRegisterAsync(Guid branchId, CancellationToken cancellationToken = default);
     Task<CashRegister?> GetCashRegisterByIdAsync(Guid cashRegisterId, CancellationToken cancellationToken = default);
+    Task<List<CashRegister>> GetCashRegistersHistoryAsync(Guid branchId, CancellationToken cancellationToken = default);
     Task AddCashRegisterAsync(CashRegister cashRegister, CancellationToken cancellationToken = default);
     Task UpdateCashRegisterAsync(CashRegister cashRegister, CancellationToken cancellationToken = default);
     

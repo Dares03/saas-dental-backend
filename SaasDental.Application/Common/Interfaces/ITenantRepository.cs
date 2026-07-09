@@ -9,4 +9,7 @@ public interface ITenantRepository
     Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken = default);
     Task AddAsync(Tenant tenant, CancellationToken cancellationToken = default);
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
+
+    Task<Branch?> GetBranchByIdAsync(Guid branchId, CancellationToken cancellationToken = default);
+    Task AddBranchAsync(Branch branch, CancellationToken cancellationToken = default);
 }

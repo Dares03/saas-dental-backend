@@ -37,7 +37,18 @@ public class FinancialRepository : IFinancialRepository
     public async Task<CashRegister?> GetCashRegisterByIdAsync(Guid cashRegisterId, CancellationToken cancellationToken = default)
     {
         return await _dbContext.CashRegisters
+            .Include(cr => cr.OpenedByUser)
             .FirstOrDefaultAsync(cr => cr.Id == cashRegisterId, cancellationToken);
+    }
+
+    public async Task<List<CashRegister>> GetCashRegistersHistoryAsync(Guid branchId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.CashRegisters
+            .Include(cr => cr.OpenedByUser)
+            .Where(cr => cr.BranchId == branchId)
+            .OrderByDescending(cr => cr.OpenedAt)
+            .Take(30) // limit to recent 30 to avoid huge payloads initially
+            .ToListAsync(cancellationToken);
     }
 
     public async Task AddCashRegisterAsync(CashRegister cashRegister, CancellationToken cancellationToken = default)

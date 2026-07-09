@@ -3,7 +3,7 @@ using SaasDental.Application.Common.Interfaces;
 
 namespace SaasDental.Application.Features.Patients.Queries.GetPatients;
 
-public record PatientDto(Guid Id, string FirstName, string LastName, string? DocumentId, string? PhoneNumber, string? Email, bool IsActive);
+public record PatientDto(Guid Id, string FirstName, string LastName, string? DocumentId, string? PhoneNumber, string? Email, string? Gender, string? Address, DateTime? DateOfBirth, DateTime CreatedAt, bool IsActive);
 
 public record GetPatientsQuery : IRequest<List<PatientDto>>;
 
@@ -27,6 +27,10 @@ public class GetPatientsHandler : IRequestHandler<GetPatientsQuery, List<Patient
             p.DocumentId,
             p.PhoneNumber,
             p.Email,
+            p.Gender,
+            p.Address,
+            p.DateOfBirth,
+            p.CreatedAt,
             p.IsActive
         )).ToList();
     }

@@ -78,7 +78,6 @@ namespace SaasDental.Infrastructure.Migrations
             modelBuilder.Entity("SaasDental.Domain.Entities.Branch", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Address")
@@ -206,6 +205,69 @@ namespace SaasDental.Infrastructure.Migrations
                     b.ToTable("CashTransactions");
                 });
 
+            modelBuilder.Entity("SaasDental.Domain.Entities.ClinicalEvolution", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("BloodPressure")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ClinicalHistoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CurrentIllnessReason")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CurrentIllnessStory")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("GeneralClinicalExam")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HeartRate")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RespiratoryRate")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Temperature")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ToothId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClinicalHistoryId");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ToothId");
+
+                    b.ToTable("ClinicalEvolutions");
+                });
+
             modelBuilder.Entity("SaasDental.Domain.Entities.ClinicalFinding", b =>
                 {
                     b.Property<Guid>("Id")
@@ -250,28 +312,13 @@ namespace SaasDental.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("BloodPressure")
-                        .HasColumnType("text");
-
                     b.Property<string>("CompanionName")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("CurrentIllnessReason")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CurrentIllnessStory")
-                        .HasColumnType("text");
-
                     b.Property<string>("FamilyHistory")
-                        .HasColumnType("text");
-
-                    b.Property<string>("GeneralClinicalExam")
-                        .HasColumnType("text");
-
-                    b.Property<string>("HeartRate")
                         .HasColumnType("text");
 
                     b.Property<string>("MaritalStatus")
@@ -290,12 +337,6 @@ namespace SaasDental.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Religion")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RespiratoryRate")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Temperature")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -422,6 +463,9 @@ namespace SaasDental.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -436,6 +480,9 @@ namespace SaasDental.Infrastructure.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Gender")
                         .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
@@ -597,6 +644,9 @@ namespace SaasDental.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -895,6 +945,32 @@ namespace SaasDental.Infrastructure.Migrations
                     b.Navigation("PatientDebt");
                 });
 
+            modelBuilder.Entity("SaasDental.Domain.Entities.ClinicalEvolution", b =>
+                {
+                    b.HasOne("SaasDental.Domain.Entities.ClinicalHistory", "ClinicalHistory")
+                        .WithMany("Evolutions")
+                        .HasForeignKey("ClinicalHistoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SaasDental.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SaasDental.Domain.Entities.Tooth", "Tooth")
+                        .WithMany("Evolutions")
+                        .HasForeignKey("ToothId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("ClinicalHistory");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("Tooth");
+                });
+
             modelBuilder.Entity("SaasDental.Domain.Entities.ClinicalFinding", b =>
                 {
                     b.HasOne("SaasDental.Domain.Entities.Tooth", "Tooth")
@@ -1081,6 +1157,8 @@ namespace SaasDental.Infrastructure.Migrations
 
             modelBuilder.Entity("SaasDental.Domain.Entities.ClinicalHistory", b =>
                 {
+                    b.Navigation("Evolutions");
+
                     b.Navigation("Odontograms");
                 });
 
@@ -1123,6 +1201,8 @@ namespace SaasDental.Infrastructure.Migrations
 
             modelBuilder.Entity("SaasDental.Domain.Entities.Tooth", b =>
                 {
+                    b.Navigation("Evolutions");
+
                     b.Navigation("Surfaces");
 
                     b.Navigation("ToothLevelFindings");

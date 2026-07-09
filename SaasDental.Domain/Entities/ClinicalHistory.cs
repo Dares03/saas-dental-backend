@@ -11,20 +11,9 @@ public class ClinicalHistory : BaseEntity
     public string? PlaceOfOrigin { get; private set; }
     public string? CompanionName { get; private set; }
 
-    // Enfermedad Actual (Can be stored as JSON or simple text if basic)
-    public string? CurrentIllnessReason { get; private set; }
-    public string? CurrentIllnessStory { get; private set; }
-
     // Antecedentes (JSON or simple text)
     public string? FamilyHistory { get; private set; }
     public string? PersonalHistory { get; private set; }
-
-    // Exploración Física Básica
-    public string? BloodPressure { get; private set; }
-    public string? HeartRate { get; private set; }
-    public string? Temperature { get; private set; }
-    public string? RespiratoryRate { get; private set; }
-    public string? GeneralClinicalExam { get; private set; }
 
     // Relación
     public Guid PatientId { get; private set; }
@@ -32,6 +21,9 @@ public class ClinicalHistory : BaseEntity
 
     // Odontogramas asociados
     public ICollection<Odontogram> Odontograms { get; private set; } = new List<Odontogram>();
+
+    // Evoluciones Clínicas asociadas
+    public ICollection<ClinicalEvolution> Evolutions { get; private set; } = new List<ClinicalEvolution>();
 
     private ClinicalHistory() { }
 
@@ -50,22 +42,12 @@ public class ClinicalHistory : BaseEntity
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void UpdateIllnessAndHistory(string? reason, string? story, string? familyHistory, string? personalHistory)
+    public void UpdateHistory(string? familyHistory, string? personalHistory)
     {
-        CurrentIllnessReason = reason;
-        CurrentIllnessStory = story;
         FamilyHistory = familyHistory;
         PersonalHistory = personalHistory;
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void UpdatePhysicalExam(string? bloodPressure, string? heartRate, string? temperature, string? respiratoryRate, string? generalClinicalExam)
-    {
-        BloodPressure = bloodPressure;
-        HeartRate = heartRate;
-        Temperature = temperature;
-        RespiratoryRate = respiratoryRate;
-        GeneralClinicalExam = generalClinicalExam;
-        UpdatedAt = DateTime.UtcNow;
-    }
+
 }

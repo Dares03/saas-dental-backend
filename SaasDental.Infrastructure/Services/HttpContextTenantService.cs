@@ -22,4 +22,11 @@ public class HttpContextTenantService : ITenantService
         if (claim is null) return null;
         return Guid.TryParse(claim.Value, out var tenantId) ? tenantId : null;
     }
+
+    public Guid? GetCurrentUserId()
+    {
+        var claim = _httpContextAccessor.HttpContext?.User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+        if (claim is null) return null;
+        return Guid.TryParse(claim.Value, out var userId) ? userId : null;
+    }
 }

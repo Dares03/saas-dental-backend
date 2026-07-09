@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SaasDental.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+246b88f71530ffa642ea064d6e0767d4292f5976")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ed85e2640598f34f7a8016e67c73b4903b1c3ba0")]
 [assembly: System.Reflection.AssemblyProductAttribute("SaasDental.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SaasDental.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

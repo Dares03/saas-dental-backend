@@ -46,4 +46,14 @@ public class TenantRepository : ITenantRepository
     {
         return _context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<Branch?> GetBranchByIdAsync(Guid branchId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<Branch>().FirstOrDefaultAsync(b => b.Id == branchId, cancellationToken);
+    }
+
+    public async Task AddBranchAsync(Branch branch, CancellationToken cancellationToken = default)
+    {
+        await _context.Set<Branch>().AddAsync(branch, cancellationToken);
+    }
 }

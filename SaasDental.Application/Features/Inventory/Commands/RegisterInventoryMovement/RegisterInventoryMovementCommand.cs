@@ -29,17 +29,29 @@ public class RegisterInventoryMovementHandler : IRequestHandler<RegisterInventor
 {
     private readonly IInventoryRepository _inventoryRepository;
     private readonly ITenantService _tenantService;
+    private readonly ITenantRepository _tenantRepository;
 
-    public RegisterInventoryMovementHandler(IInventoryRepository inventoryRepository, ITenantService tenantService)
+    public RegisterInventoryMovementHandler(IInventoryRepository inventoryRepository, ITenantService tenantService, ITenantRepository tenantRepository)
     {
         _inventoryRepository = inventoryRepository;
         _tenantService = tenantService;
+        _tenantRepository = tenantRepository;
     }
 
     public async Task<Guid> Handle(RegisterInventoryMovementCommand request, CancellationToken cancellationToken)
     {
         var tenantId = _tenantService.GetCurrentTenantId()
             ?? throw new UnauthorizedAccessException("El contexto no tiene un Tenant válido.");
+
+        // Auto-heal: Ensure Branch exists
+        var branch = await _tenantRepository.GetBranchByIdAsync(request.BranchId, cancellationToken);
+        if (branch == null)
+        {
+            branch = new Branch("Sede Principal", "Dirección no especificada", "", tenantId);
+            branch.SetId(request.BranchId);
+            await _tenantRepository.AddBranchAsync(branch, cancellationToken);
+            await _tenantRepository.SaveChangesAsync(cancellationToken);
+        }
 
         // Verificar si existe el InventoryItem para ese Producto en esa Sede
         var inventoryItem = await _inventoryRepository.GetInventoryItemAsync(request.ProductId, request.BranchId, cancellationToken);
@@ -59,8 +71,8 @@ public class RegisterInventoryMovementHandler : IRequestHandler<RegisterInventor
         // Aplicar el movimiento lógico al Stock Actual
         inventoryItem.ApplyMovement(request.Quantity, request.Type);
         
-        // Mock User Id for now, since we don't have user injection yet
-        var currentUserId = Guid.Empty;
+        var currentUserId = _tenantService.GetCurrentUserId() 
+            ?? throw new UnauthorizedAccessException("Usuario no autenticado.");
 
         // Registrar el movimiento en el Kardex
         var movement = new InventoryMovement(

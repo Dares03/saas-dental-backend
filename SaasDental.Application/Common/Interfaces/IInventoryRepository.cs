@@ -7,7 +7,16 @@ public interface IInventoryRepository
     // Products
     Task AddProductAsync(Product product, CancellationToken cancellationToken = default);
     Task<Product?> GetProductByIdAsync(Guid productId, CancellationToken cancellationToken = default);
+    Task<ProductCategory?> GetProductCategoryByIdAsync(Guid categoryId, CancellationToken cancellationToken = default);
     Task<List<ProductCategory>> GetProductCategoriesAsync(CancellationToken cancellationToken = default);
+    Task AddProductCategoryAsync(ProductCategory category, CancellationToken cancellationToken = default);
+    Task UpdateProductCategoryAsync(ProductCategory category, CancellationToken cancellationToken = default);
+    Task DeleteProductCategoryAsync(ProductCategory category, CancellationToken cancellationToken = default);
+    Task DeleteProductAsync(Product product, CancellationToken cancellationToken = default);
+    Task UpdateProductAsync(Product product, CancellationToken cancellationToken = default);
+    Task<bool> HasInventoryMovementsAsync(Guid productId, CancellationToken cancellationToken = default);
+    
+    Task<List<InventoryMovement>> GetMovementsAsync(Guid productId, Guid branchId, CancellationToken cancellationToken = default);
     
     // Inventory Items (Stock per branch)
     Task<InventoryItem?> GetInventoryItemAsync(Guid productId, Guid branchId, CancellationToken cancellationToken = default);

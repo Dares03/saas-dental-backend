@@ -41,8 +41,8 @@ public class OpenCashRegisterHandler : IRequestHandler<OpenCashRegisterCommand, 
             throw new InvalidOperationException("Ya existe una caja abierta para esta sede.");
         }
 
-        // Ideally get the UserId from ICurrentUser, using Guid.Empty for now to keep it compiling until auth user is fully integrated
-        var currentUserId = Guid.Empty; 
+        var currentUserId = _tenantService.GetCurrentUserId()
+            ?? throw new UnauthorizedAccessException("Usuario no autenticado.");
 
         var cashRegister = new CashRegister(
             request.InitialBalance,

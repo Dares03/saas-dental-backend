@@ -6,6 +6,7 @@ public class ProductCategory : BaseEntity
 {
     public string Name { get; private set; } = string.Empty;
     public string? Description { get; private set; }
+    public bool IsActive { get; private set; } = true;
 
     public Guid TenantId { get; private set; }
 
@@ -24,6 +25,18 @@ public class ProductCategory : BaseEntity
     {
         Name = name;
         Description = description;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Deactivate()
+    {
+        IsActive = false;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Activate()
+    {
+        IsActive = true;
         UpdatedAt = DateTime.UtcNow;
     }
 }

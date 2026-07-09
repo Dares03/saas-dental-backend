@@ -23,6 +23,7 @@ public class ApplicationDbContext : DbContext
     
     // Clinical Module
     public DbSet<ClinicalHistory> ClinicalHistories => Set<ClinicalHistory>();
+    public DbSet<ClinicalEvolution> ClinicalEvolutions => Set<ClinicalEvolution>();
     public DbSet<Odontogram> Odontograms => Set<Odontogram>();
     public DbSet<Tooth> Teeth => Set<Tooth>();
     public DbSet<ToothSurface> ToothSurfaces => Set<ToothSurface>();
@@ -60,6 +61,11 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Product>().HasQueryFilter(p => p.TenantId == _tenantService.GetCurrentTenantId());
         modelBuilder.Entity<InventoryItem>().HasQueryFilter(ii => ii.TenantId == _tenantService.GetCurrentTenantId());
         modelBuilder.Entity<InventoryMovement>().HasQueryFilter(im => im.TenantId == _tenantService.GetCurrentTenantId());
+        modelBuilder.Entity<ClinicalEvolution>().HasQueryFilter(ce => ce.TenantId == _tenantService.GetCurrentTenantId());
+        modelBuilder.Entity<ClinicalEvolution>().HasQueryFilter(ce => ce.TenantId == _tenantService.GetCurrentTenantId());
+
+        // Configure explicitly that Branch Id shouldn't be auto-generated when supplied manually
+        modelBuilder.Entity<Branch>().Property(b => b.Id).ValueGeneratedNever();
 
         // Configure relationships and constraints
         modelBuilder.Entity<Tenant>()
@@ -120,6 +126,24 @@ public class ApplicationDbContext : DbContext
             .WithOne()
             .HasForeignKey<ClinicalHistory>(ch => ch.PatientId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ClinicalEvolution>()
+            .HasOne(ce => ce.ClinicalHistory)
+            .WithMany(ch => ch.Evolutions)
+            .HasForeignKey(ce => ce.ClinicalHistoryId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ClinicalEvolution>()
+            .HasOne(ce => ce.Tooth)
+            .WithMany(t => t.Evolutions)
+            .HasForeignKey(ce => ce.ToothId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ClinicalEvolution>()
+            .HasOne(ce => ce.CreatedByUser)
+            .WithMany()
+            .HasForeignKey(ce => ce.CreatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Odontogram>()
             .HasOne(o => o.ClinicalHistory)

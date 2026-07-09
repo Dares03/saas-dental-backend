@@ -12,15 +12,8 @@ public record UpdateClinicalHistoryCommand(
     string? MaritalStatus,
     string? PlaceOfOrigin,
     string? CompanionName,
-    string? CurrentIllnessReason,
-    string? CurrentIllnessStory,
     string? FamilyHistory,
-    string? PersonalHistory,
-    string? BloodPressure,
-    string? HeartRate,
-    string? Temperature,
-    string? RespiratoryRate,
-    string? GeneralClinicalExam) : IRequest<Guid>;
+    string? PersonalHistory) : IRequest<Guid>;
 
 public class UpdateClinicalHistoryValidator : AbstractValidator<UpdateClinicalHistoryCommand>
 {
@@ -47,8 +40,7 @@ public class UpdateClinicalHistoryHandler : IRequestHandler<UpdateClinicalHistor
             throw new Exception("Historia clínica no encontrada para este paciente.");
 
         history.UpdateIdentification(request.Occupation, request.Religion, request.MaritalStatus, request.PlaceOfOrigin, request.CompanionName);
-        history.UpdateIllnessAndHistory(request.CurrentIllnessReason, request.CurrentIllnessStory, request.FamilyHistory, request.PersonalHistory);
-        history.UpdatePhysicalExam(request.BloodPressure, request.HeartRate, request.Temperature, request.RespiratoryRate, request.GeneralClinicalExam);
+        history.UpdateHistory(request.FamilyHistory, request.PersonalHistory);
 
         await _clinicalRepository.UpdateHistoryAsync(history, cancellationToken);
 

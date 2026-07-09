@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using SaasDental.Application.Features.Clinical.Commands.UpdateClinicalHistory;
 using SaasDental.Application.Features.Clinical.Commands.CreateOdontogram;
 using SaasDental.Application.Features.Clinical.Commands.AddFindingToOdontogram;
+using SaasDental.Application.Features.Clinical.Commands.AddClinicalEvolution;
+using SaasDental.Application.Features.Clinical.Commands.UpdateClinicalFinding;
 using SaasDental.Application.Features.Clinical.Queries.GetOdontogram;
 using SaasDental.Application.Features.Clinical.Queries.GetHistoryByPatientId;
 
@@ -54,6 +56,28 @@ public static class ClinicalEndpoints
         {
             var findingId = await mediator.Send(command);
             return Results.Created($"/api/clinical/odontogram/finding/{findingId}", new { id = findingId });
+        })
+        .Produces(StatusCodes.Status201Created);
+
+        group.MapPut("/odontogram/finding", async (IMediator mediator, [FromBody] UpdateClinicalFindingCommand command) =>
+        {
+            await mediator.Send(command);
+            return Results.Ok();
+        })
+        .Produces(StatusCodes.Status200OK);
+
+        group.MapDelete("/odontogram/tooth/{odontogramId:guid}/{toothNumber:int}", async (Guid odontogramId, int toothNumber, IMediator mediator) =>
+        {
+            await mediator.Send(new SaasDental.Application.Features.Clinical.Commands.ClearTooth.ClearToothCommand(odontogramId, toothNumber));
+            return Results.Ok();
+        })
+        .Produces(StatusCodes.Status200OK);
+
+        // -- Evolutions --
+        group.MapPost("/evolution", async (IMediator mediator, [FromBody] AddClinicalEvolutionCommand command) =>
+        {
+            var evolutionId = await mediator.Send(command);
+            return Results.Created($"/api/clinical/evolution/{evolutionId}", new { id = evolutionId });
         })
         .Produces(StatusCodes.Status201Created);
     }

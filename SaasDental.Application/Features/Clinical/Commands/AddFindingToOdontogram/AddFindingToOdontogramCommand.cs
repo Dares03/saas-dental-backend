@@ -51,17 +51,19 @@ public class AddFindingToOdontogramHandler : IRequestHandler<AddFindingToOdontog
         {
             tooth = new Tooth(request.ToothNumber, request.OdontogramId);
             odontogram.Teeth.Add(tooth);
+            await _clinicalRepository.SaveChangesAsync(cancellationToken);
         }
 
         // 2. Find or create Surface (if applicable)
         ToothSurface? surface = null;
-        if (request.SurfaceType.HasValue)
+        if (request.SurfaceType.HasValue && request.SurfaceType.Value != SurfaceType.None)
         {
             surface = tooth.Surfaces.FirstOrDefault(s => s.SurfaceType == request.SurfaceType.Value);
             if (surface == null)
             {
                 surface = new ToothSurface(request.SurfaceType.Value, tooth.Id);
                 tooth.Surfaces.Add(surface);
+                await _clinicalRepository.SaveChangesAsync(cancellationToken);
             }
         }
 

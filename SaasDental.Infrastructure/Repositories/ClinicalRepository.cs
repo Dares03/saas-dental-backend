@@ -18,6 +18,11 @@ public class ClinicalRepository : IClinicalRepository
     public async Task<ClinicalHistory?> GetHistoryByPatientIdAsync(Guid patientId, CancellationToken cancellationToken = default)
     {
         return await _dbContext.ClinicalHistories
+            .Include(ch => ch.Evolutions.OrderByDescending(e => e.Date))
+                .ThenInclude(e => e.CreatedByUser)
+            .Include(ch => ch.Evolutions)
+                .ThenInclude(e => e.Tooth)
+            .Include(ch => ch.Odontograms)
             .FirstOrDefaultAsync(ch => ch.PatientId == patientId, cancellationToken);
     }
 
@@ -65,8 +70,38 @@ public class ClinicalRepository : IClinicalRepository
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task AddClinicalEvolutionAsync(ClinicalEvolution evolution, CancellationToken cancellationToken = default)
+    {
+        await _dbContext.ClinicalEvolutions.AddAsync(evolution, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<ClinicalFinding?> GetClinicalFindingByIdAsync(Guid findingId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.ClinicalFindings.FindAsync(new object[] { findingId }, cancellationToken);
+    }
+
+    public async Task<Tooth?> GetToothByIdAsync(Guid toothId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Teeth
+            .Include(t => t.Odontogram)
+            .FirstOrDefaultAsync(t => t.Id == toothId, cancellationToken);
+    }
+
     public Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         return _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task DeleteToothAsync(Guid odontogramId, int toothNumber, CancellationToken cancellationToken = default)
+    {
+        var tooth = await _dbContext.Teeth
+            .FirstOrDefaultAsync(t => t.OdontogramId == odontogramId && t.ToothNumber == toothNumber, cancellationToken);
+        
+        if (tooth != null)
+        {
+            _dbContext.Teeth.Remove(tooth);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
     }
 }

@@ -10,6 +10,8 @@ public class Patient : BaseEntity
     public DateTime? DateOfBirth { get; private set; }
     public string? PhoneNumber { get; private set; }
     public string? Email { get; private set; }
+    public string? Gender { get; private set; }
+    public string? Address { get; private set; }
     public bool IsActive { get; private set; }
 
     // Multitenancy: The Tenant this patient belongs to
@@ -22,7 +24,7 @@ public class Patient : BaseEntity
 
     private Patient() { } // For EF Core
 
-    public Patient(string firstName, string lastName, string? documentId, DateTime? dateOfBirth, string? phoneNumber, string? email, Guid tenantId)
+    public Patient(string firstName, string lastName, string? documentId, DateTime? dateOfBirth, string? phoneNumber, string? email, Guid tenantId, string? gender = null, string? address = null)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -31,10 +33,12 @@ public class Patient : BaseEntity
         PhoneNumber = phoneNumber;
         Email = email;
         TenantId = tenantId;
+        Gender = gender;
+        Address = address;
         IsActive = true;
     }
 
-    public void UpdateDetails(string firstName, string lastName, string? documentId, DateTime? dateOfBirth, string? phoneNumber, string? email)
+    public void UpdateDetails(string firstName, string lastName, string? documentId, DateTime? dateOfBirth, string? phoneNumber, string? email, string? gender = null, string? address = null)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -42,6 +46,8 @@ public class Patient : BaseEntity
         DateOfBirth = dateOfBirth;
         PhoneNumber = phoneNumber;
         Email = email;
+        Gender = gender;
+        Address = address;
         UpdatedAt = DateTime.UtcNow;
     }
 

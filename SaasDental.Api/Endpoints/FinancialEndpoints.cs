@@ -6,6 +6,7 @@ using SaasDental.Application.Features.Financial.Commands.CloseCashRegister;
 using SaasDental.Application.Features.Financial.Commands.AddIncome;
 using SaasDental.Application.Features.Financial.Commands.AddExpense;
 using SaasDental.Application.Features.Financial.Queries.GetActiveCashRegister;
+using SaasDental.Application.Features.Financial.Queries.GetCashRegistersHistory;
 using SaasDental.Application.Features.Financial.Queries.GetCashRegisterTransactions;
 
 namespace SaasDental.Api.Endpoints;
@@ -49,6 +50,15 @@ public static class FinancialEndpoints
         })
         .Produces<CashRegisterDto>()
         .Produces(StatusCodes.Status404NotFound);
+
+        group.MapGet("/cash-register/history/{branchId:guid}", async (Guid branchId, IMediator mediator) =>
+        {
+            var query = new GetCashRegistersHistoryQuery(branchId);
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+        .Produces<List<CashRegisterHistoryDto>>()
+        .Produces(StatusCodes.Status200OK);
 
         group.MapGet("/cash-register/{cashRegisterId:guid}/transactions", async (Guid cashRegisterId, IMediator mediator) =>
         {

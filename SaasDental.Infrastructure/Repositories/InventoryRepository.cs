@@ -61,6 +61,12 @@ public class InventoryRepository : IInventoryRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task AddProductCategoryAsync(ProductCategory category, CancellationToken cancellationToken = default)
+    {
+        await _dbContext.Set<ProductCategory>().AddAsync(category, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
     public async Task<List<InventoryItem>> GetLowStockItemsAsync(Guid branchId, CancellationToken cancellationToken = default)
     {
         return await _dbContext.InventoryItems
@@ -73,5 +79,54 @@ public class InventoryRepository : IInventoryRepository
     {
         await _dbContext.InventoryMovements.AddAsync(movement, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<ProductCategory?> GetProductCategoryByIdAsync(Guid categoryId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Set<ProductCategory>()
+            .Include(c => c.Products)
+            .FirstOrDefaultAsync(c => c.Id == categoryId, cancellationToken);
+    }
+
+    public async Task UpdateProductCategoryAsync(ProductCategory category, CancellationToken cancellationToken = default)
+    {
+        _dbContext.Set<ProductCategory>().Update(category);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task DeleteProductCategoryAsync(ProductCategory category, CancellationToken cancellationToken = default)
+    {
+        _dbContext.Set<ProductCategory>().Remove(category);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task DeleteProductAsync(Product product, CancellationToken cancellationToken = default)
+    {
+        var items = await _dbContext.InventoryItems.Where(ii => ii.ProductId == product.Id).ToListAsync(cancellationToken);
+        _dbContext.InventoryItems.RemoveRange(items);
+        _dbContext.Products.Remove(product);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task UpdateProductAsync(Product product, CancellationToken cancellationToken = default)
+    {
+        _dbContext.Products.Update(product);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<bool> HasInventoryMovementsAsync(Guid productId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.InventoryMovements
+            .AnyAsync(m => m.InventoryItem.ProductId == productId, cancellationToken);
+    }
+
+    public async Task<List<InventoryMovement>> GetMovementsAsync(Guid productId, Guid branchId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.InventoryMovements
+            .Include(m => m.User)
+            .Include(m => m.InventoryItem)
+            .Where(m => m.InventoryItem.ProductId == productId && m.InventoryItem.BranchId == branchId)
+            .OrderByDescending(m => m.CreatedAt)
+            .ToListAsync(cancellationToken);
     }
 }
